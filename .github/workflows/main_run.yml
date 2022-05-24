@@ -7,6 +7,8 @@ jobs:
     env:
       DBT_PWD: ${{  secrets.DBT_PWD }} 
       DBT_USER: ${{ secrets.DBT_USER }}
+      dvd_test_passphrase: ${{ secrets.dvd_test_passphrase }}
+
 
     runs-on: ubuntu-latest
     steps:
@@ -27,6 +29,9 @@ jobs:
         run: |
           ls
 
+      - name: create-key
+        run: |
+          echo ${{ secrets.DBT_KEY }} > /root/.ssh/rsa_key_david_sf.p8
 
       - name: install-requirements
         run: |
@@ -36,17 +41,12 @@ jobs:
           cd weather
           export DBT_PROFILES_DIR=./weather/profiles
           dbt deps
-
-      - name: Run seeds
-        run: dbt seed --profiles-dir . --profile fission -s state:modified --state ./old_manifest
       
       - name: Run all models
-        run: dbt run --profiles-dir . --profile fission -s state:modified+ --state ./old_manifest --defer
-      
-      - name: Run all tests
-        run: dbt test --profiles-dir . --profile fission -s state:modified+ --state ./old_manifest --defer
-
-      
-      
-      - name: Copy manifest.json to s3 bucket
-        run: aws s3 cp ./target/manifest.json s3://bi-learning-slimci/manifest.json  
+        run: |
+          cd  weather
+          dbt run-operation create_artifact_resources
+          dbt run --exclude package:re_data package:dbt_artifacts
+          dbt --no-write-json run-operation upload_dbt_artifacts_v2
+          dbt run --select package:re_data
+          dbt --no-write-json run-operation upload_dbt_artifacts_v2

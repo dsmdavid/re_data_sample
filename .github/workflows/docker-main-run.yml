@@ -20,8 +20,8 @@ jobs:
         uses: docker-practice/actions-setup-docker@master
       - name: create-key
         run:
-          sudo mkdir -p .ssh/  
-          sudo echo ${{ secrets.SSH_KEY }} > ./.ssh/rsa_key_david_sf.p8 
+          mkdir -p .ssh  
+          echo ${{ secrets.SSH_KEY }} > ./.ssh/rsa_key_david_sf.p8 
       - name: create docker
         run: |
           docker-compose build dbt-local-ci

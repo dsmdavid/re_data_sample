@@ -1,0 +1,49 @@
+name: main-run
+on:
+  workflow_dispatch:
+
+jobs:
+  run_workflow:
+    env:
+      DBT_PWD: ${{  secrets.DBT_PWD }} 
+      DBT_USER: ${{ secrets.DBT_USER }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Python setup
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - name: see-env
+        run: |
+          env
+      - name: where
+        run: |
+          pwd
+
+
+      - name: install-requirements
+        run: |
+          pip -requirements.txt
+          
+          # install packages
+          cd weather
+          export DBT_PROFILES_DIR=./weather/profiles
+          dbt deps
+
+      - name: Run seeds
+        run: dbt seed --profiles-dir . --profile fission -s state:modified --state ./old_manifest
+      
+      - name: Run all models
+        run: dbt run --profiles-dir . --profile fission -s state:modified+ --state ./old_manifest --defer
+      
+      - name: Run all tests
+        run: dbt test --profiles-dir . --profile fission -s state:modified+ --state ./old_manifest --defer
+
+      
+      
+      - name: Copy manifest.json to s3 bucket
+        run: aws s3 cp ./target/manifest.json s3://bi-learning-slimci/manifest.json  

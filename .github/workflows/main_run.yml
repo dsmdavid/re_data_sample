@@ -23,11 +23,14 @@ jobs:
       - name: where
         run: |
           pwd
+      - name: ls
+        run: |
+          ls
 
 
       - name: install-requirements
         run: |
-          pip -requirements.txt
+          pip install -r requirements.txt
           
           # install packages
           cd weather

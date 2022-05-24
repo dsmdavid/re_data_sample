@@ -16,49 +16,16 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
-
-      - name: Python setup
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.9'
-      - name: see-env
-        run: |
-          env
-      - name: where
-        run: |
-          pwd
-      - name: ls
-        run: |
-          ls
-      - name: test-key
-        run: |
-          echo ${{ secrets.SSH_KEY }}
-      - name: create-dir
-        run: |
-          sudo mkdir -p /root/.ssh/
-          sudo chmod 700 /root/.ssh/
+      - name: Set Up Docker
+        uses: docker-practice/actions-setup-docker@master
       - name: create-key
+        run:
+          sudo mkdir -p .ssh/
+          sudo echo ${{ secrets.SSH_KEY }} > ./.ssh/rsa_key_david_sf.p8 
+      - name: create docker
         run: |
-          sudo chmod 700 /root/.ssh/
-          sudo touch /root/.ssh/rsa_key_david_sf.p8
-          sudo chmod 700 /root/.ssh/rsa_key_david_sf.p8
-          sudo echo hola > ./rsa_key_david_sf.p8
+          docker-compose build dbt-local-ci
+      - name: run docker
+        run: |
+          docker-compose run dbt-local-ci
 
-      - name: install-requirements
-        run: |
-          pip install -r requirements.txt
-          
-          # install packages
-          cd weather
-          export DBT_PROFILES_DIR=./weather/profiles
-          dbt deps
-      
-      - name: Run all models
-        run: |
-          cd  weather
-          chmod 664 /root/.ssh/rsa_key_david_sf.p8
-          dbt run-operation create_artifact_resources
-          dbt run --exclude package:re_data package:dbt_artifacts
-          dbt --no-write-json run-operation upload_dbt_artifacts_v2
-          dbt run --select package:re_data
-          dbt --no-write-json run-operation upload_dbt_artifacts_v2

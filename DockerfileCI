@@ -26,8 +26,8 @@ RUN mkdir -p /app
 COPY ./ /app/
 RUN chmod 777 -R /app
 COPY ./packages.yml /app/weather/packages.yml
-WORKDIR /app/weather
-RUN dbt deps
-
-RUN chmod +x /app/entrypoint.sh
-ENTRYPOINT ["/bin/bash", "/app/entrypoint.sh"]
+RUN ls /app
+COPY ./ci.sh /app/ci.sh
+RUN chmod +x /app/ci.sh
+WORKDIR /app
+ENTRYPOINT ["/bin/bash", "/app/ci.sh"]

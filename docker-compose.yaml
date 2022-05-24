@@ -13,3 +13,17 @@ services:
 
         ports:
             - "8085:8085"
+    dbt-local-ci:
+        command: /bin/bash
+        build:
+            context: .
+            dockerfile: DockerfileCI
+        volumes:
+            - ./:/app/
+            - ./.ssh:/root/.ssh
+
+        environment:
+            - dvd_test_passphrase=$dvd_test_passphrase
+
+        ports:
+            - "8085:8085"

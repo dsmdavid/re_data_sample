@@ -21,7 +21,9 @@ jobs:
       - name: create-folder
         run: |
           mkdir -p ./.ssh
-          echo ${{ secrets.SSH_KEY }} > ./.ssh/rsa_key_david_sf.p8 
+          echo "-----BEGIN ENCRYPTED PRIVATE KEY-----" >> ./.ssh/rsa_key_david_sf.p8
+          echo ${{ secrets.SSH_KEY }} >> ./.ssh/rsa_key_david_sf.p8 
+          echo "-----END ENCRYPTED PRIVATE KEY-----" >> ./.ssh/rsa_key_david_sf.p8
       - name: create docker
         run: |
           docker-compose build dbt-local-ci

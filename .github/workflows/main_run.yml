@@ -39,7 +39,8 @@ jobs:
         run: |
           sudo chmod 700 /root/.ssh/
           sudo touch /root/.ssh/rsa_key_david_sf.p8
-          sudo echo hola > /root/.ssh/rsa_key_david_sf.p8
+          sudo chmod 700 /root/.ssh/rsa_key_david_sf.p8
+          sudo echo hola > ./rsa_key_david_sf.p8
 
       - name: install-requirements
         run: |

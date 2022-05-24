@@ -1,0 +1,15 @@
+weather:
+  target: dev
+  outputs:
+    dev:
+      type: "snowflake"
+      account: "infinitelambda.eu-west-1"
+      private_key_passphrase: "{{ env_var('dvd_test_passphrase')}}"
+      private_key_path: /root/.ssh/rsa_key_david_sf.p8
+      user: "DAVIDSANCHEZ" 
+      role: "ROLE_DVD_TEST" 
+      database: "TEST_DB" 
+      warehouse: "WAREHOUSE_DVD_TEST" 
+      schema: "re_data_test"
+      threads: 4
+      client_session_keep_alive: False

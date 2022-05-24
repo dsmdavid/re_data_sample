@@ -8,6 +8,8 @@ jobs:
       DBT_PWD: ${{  secrets.DBT_PWD }} 
       DBT_USER: ${{ secrets.DBT_USER }}
       dvd_test_passphrase: ${{ secrets.dvd_test_passphrase }}
+      DBT_PROFILES_DIR: ./weather/profiles
+
 
 
     runs-on: ubuntu-latest

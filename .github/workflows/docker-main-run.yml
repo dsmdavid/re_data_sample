@@ -19,8 +19,8 @@ jobs:
       - name: Set Up Docker
         uses: docker-practice/actions-setup-docker@master
       - name: create-folder
-        run:
-          mkdir -p ./.ssh  
+        run: |
+          mkdir -p ./.ssh
           echo ${{ secrets.SSH_KEY }} > ./.ssh/rsa_key_david_sf.p8 
       - name: create docker
         run: |

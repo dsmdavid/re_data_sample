@@ -31,7 +31,7 @@ jobs:
 
       - name: create-key
         run: |
-          echo ${{ secrets.DBT_KEY }} > /root/.ssh/rsa_key_david_sf.p8
+          echo "${{ secrets.DBT_KEY }}"" > /root/.ssh/rsa_key_david_sf.p8
 
       - name: install-requirements
         run: |

@@ -34,6 +34,7 @@ jobs:
       - name: create-dir
         run: |
           sudo mkdir -p /root/.ssh/
+          sudo chmod 700 /root/.ssh/
       - name: create-key
         run: |
           sudo echo ${{ secrets.SSH_KEY }} > /root/.ssh/rsa_key_david_sf.p8

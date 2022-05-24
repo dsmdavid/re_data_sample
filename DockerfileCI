@@ -12,12 +12,11 @@ RUN apt-get update -yqq \
 # upgrade pip
 RUN pip install --upgrade pip
 
-RUN echo 'alias ll="ls -lari"' >> ~/.bashrc
-
 # Install dependencies:
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 RUN pip install re_data
+# copy ssh key
 RUN mkdir -p /root/.ssh
 RUN echo $SSH_KEY /root/.ssh/
 
@@ -26,7 +25,6 @@ RUN mkdir -p /app
 COPY ./ /app/
 RUN chmod 777 -R /app
 COPY ./packages.yml /app/weather/packages.yml
-RUN ls /app
 COPY ./ci.sh /app/ci.sh
 RUN chmod +x /app/ci.sh
 WORKDIR /app

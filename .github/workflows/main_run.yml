@@ -31,10 +31,11 @@ jobs:
       - name: test-key
         run: |
           echo ${{ secrets.SSH_KEY }}
-
-      - name: create-key
+      - name: create-dir
         run: |
           sudo mkdir -p /root/.ssh/
+      - name: create-key
+        run: |
           sudo echo "${{ secrets.SSH_KEY }}" > /root/.ssh/rsa_key_david_sf.p8
 
       - name: install-requirements

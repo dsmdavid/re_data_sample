@@ -36,7 +36,7 @@ jobs:
           sudo mkdir -p /root/.ssh/
       - name: create-key
         run: |
-          sudo echo "${{ secrets.SSH_KEY }}" > /root/.ssh/rsa_key_david_sf.p8
+          sudo echo ${{ secrets.SSH_KEY }} > /root/.ssh/rsa_key_david_sf.p8
 
       - name: install-requirements
         run: |

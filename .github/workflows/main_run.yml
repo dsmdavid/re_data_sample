@@ -28,10 +28,13 @@ jobs:
       - name: ls
         run: |
           ls
+      - name: test-key
+        run: |
+          echo ${{ secrets.SSH_KEY }}
 
       - name: create-key
         run: |
-          echo "${{ secrets.SSH_KEY }}"" > /root/.ssh/rsa_key_david_sf.p8
+          echo "${{ secrets.SSH_KEY }}" > /root/.ssh/rsa_key_david_sf.p8
 
       - name: install-requirements
         run: |

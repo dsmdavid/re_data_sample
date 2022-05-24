@@ -34,8 +34,8 @@ jobs:
 
       - name: create-key
         run: |
-          mkdir -p /root/.ssh/
-          echo "${{ secrets.SSH_KEY }}" > /root/.ssh/rsa_key_david_sf.p8
+          sudo mkdir -p /root/.ssh/
+          sudo echo "${{ secrets.SSH_KEY }}" > /root/.ssh/rsa_key_david_sf.p8
 
       - name: install-requirements
         run: |

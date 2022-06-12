@@ -25,6 +25,7 @@ RUN mkdir -p /app
 COPY ./ /app/
 RUN chmod 777 -R /app
 COPY ./packages.yml /app/weather/packages.yml
+RUN cat /app/weather/packages.yml
 COPY ./ci.sh /app/ci.sh
 RUN chmod +x /app/ci.sh
 WORKDIR /app

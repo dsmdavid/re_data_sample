@@ -19,6 +19,10 @@ target-path: "target"  # directory which will store compiled SQL files
 clean-targets: ["target", "dbt_modules", "dbt_packages"]
 
 vars:
+  models_metadata:
+    table_name: dvd_dbt_models_metadata
+    schema: RE_DATA_TEST
+    
   re_data:anomaly_detector:
     name: modified_z_score
     threshold: 3
@@ -32,3 +36,6 @@ models:
     +schema: dbt_artifacts
     staging:
       +schema: dbt_artifacts_stg
+
+on-run-end:
+- '{{models_metadata.generate(results)}}'

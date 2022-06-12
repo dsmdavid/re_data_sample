@@ -35,7 +35,12 @@ jobs:
           echo ${{ secrets.SSH_KEY }}
       - name: create-dir
         run: |
-          sudo mkdir -p /root/.ssh/
+          mkdir -p /root/.ssh/
+          touch ./rsa_key_david_sf.p8
+          echo "-----BEGIN ENCRYPTED PRIVATE KEY-----" >> ./.ssh/rsa_key_david_sf.p8
+          echo ${{ secrets.SSH_KEY }} >> ./.ssh/rsa_key_david_sf.p8 
+          echo "-----END ENCRYPTED PRIVATE KEY-----" >> ./.ssh/rsa_key_david_sf.p8
+
           sudo chmod 700 /root/.ssh/
       - name: create-key
         run: |

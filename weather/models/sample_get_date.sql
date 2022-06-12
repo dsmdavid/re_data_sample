@@ -19,6 +19,10 @@ select max(DATE_VALID_STD) from {{ source('standard_tile', 'forecast_day') }}
 {{ log(max_date, info=True) }}
 {{ log(test_day, info=True) }} #}
 
+{{ log(flags.WHICH, info=True) }}
+{{ log(flags.keys(), info = True)}}
+
+
 {% if execute %}
     {% if test_day == max_date %}
     {{ log('yes, it is', info=True) }}

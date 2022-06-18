@@ -24,4 +24,4 @@ echo "--- run re_data & artifacts ---"
 dbt run --select package:re_data package:dbt_artifacts
 echo -ne "\n\n\n\n\n"
 echo "--- run upload artifacts (II) start ---"
-dbt --no-write-json run-operation upload_dbt_artifacts_v2
+echo "skipping: dbt --no-write-json run-operation upload_dbt_artifacts_v2" 

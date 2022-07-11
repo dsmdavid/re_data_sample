@@ -16,7 +16,7 @@ if not api_key:
     raise Exception("No API key found for spectacles, aborting").
 headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
 # Define the schema of the dbt staging data
-dvd_spectacles_db = "PR_10"
+dvd_spectacles_db = os.getenv('pr_ci_db')
 # Create a run
 create_run_url = "https://app.spectacles.dev/api/v1/runs"
 payload = {

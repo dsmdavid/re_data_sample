@@ -36,6 +36,3 @@ models:
     +schema: dbt_artifacts
     staging:
       +schema: dbt_artifacts_stg
-
-on-run-end:
-- '{{models_metadata.generate(results)}}'

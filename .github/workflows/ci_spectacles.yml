@@ -1,0 +1,37 @@
+    
+name: run spectacles on merge
+
+on: 
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    
+
+jobs:
+
+  run_slim_ci_then_spectacles:
+    name: Run dbt Cloud Job
+    runs-on: ubuntu-latest
+
+  # Set the environment variables needed for the run
+    env:
+      DBT_PWD: ${{  secrets.DBT_PWD }} 
+      DBT_USER: ${{ secrets.DBT_USER }}
+      dvd_test_passphrase: ${{ secrets.dvd_test_passphrase }}
+      DBT_PROFILES_DIR: /home/runner/work/re_data_sample/re_data_sample/weather/profiles
+      SSH_KEY: ${{ secrets.SSH_KEY }}
+      SPECTACLES_ORG: ${{ secrets.SPECTACLES_ORG }}
+      SPECTACLES_SUITE_ID: ${{ secrets.SPECTACLES_SUITE_ID }}
+      SPECTACLES_PROJECT_ID: ${{ secrets.SPECTACLES_PROJECT_ID }}
+      SPECTACLES_API_KEY: ${{ secrets.SPECTACLES_API_KEY }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }} 
+
+    steps:
+      - uses: "actions/checkout@v3"
+      - uses: "actions/setup-python@v2"
+        with:
+          python-version: "3.9"
+      - name: install requirements
+        run: "pip install requirements.txt"

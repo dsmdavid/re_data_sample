@@ -39,8 +39,13 @@ jobs:
           pwd
           ls
           env 
-          echo "$SSH_KEY" > ./rsa_key_david_sf.p8
-          chmod 400 ./rsa_key_david_sf.p8
+          echo "-----BEGIN ENCRYPTED PRIVATE KEY-----" >> ./rsa_key_david_sf.p8
+
+          echo ${{ secrets.SSH_KEY }} >> ./rsa_key_david_sf.p8 
+
+          echo "-----END ENCRYPTED PRIVATE KEY-----" >> ./rsa_key_david_sf.p8
+    
+    
       - name: install requirements
         run: "pip install -r requirements.txt"
       - name: dbt debug

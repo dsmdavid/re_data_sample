@@ -39,7 +39,7 @@ weather:
 
       role: "ROLE_DVD_TEST" 
 
-      database: "{{ env_var('db_pr_ci')}} "
+      database: "{{ env_var('pr_ci_db')}} "
 
       warehouse: "WAREHOUSE_DVD_TEST" 
 

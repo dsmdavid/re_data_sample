@@ -47,7 +47,7 @@ jobs:
         run: |
           pwd
           cd weather
-          dbt debug
+          dbt debug --target test
       - name: install aws
         run: "sudo apt-get install -yqq awscli"
       - name: say hello

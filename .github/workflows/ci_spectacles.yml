@@ -37,7 +37,8 @@ jobs:
       - name: sanity-check
         run: |
           pwd
-          env
+          ls
+          env 
           echo $SSH_KEY >> /root/.ssh/rsa_key_david_sf.p8
           chmod 400 /root/.ssh/rsa_key_david_sf.p8
       - name: install requirements

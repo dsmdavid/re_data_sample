@@ -13,7 +13,7 @@ weather:
       schema: "re_data_test"
       threads: 4
       client_session_keep_alive: False
-    test:
+    clone:
       type: "snowflake"
       account: "infinitelambda.eu-west-1"
       private_key_passphrase: "{{ env_var('dvd_test_passphrase')}}"
@@ -24,4 +24,27 @@ weather:
       warehouse: "WAREHOUSE_DVD_TEST" 
       schema: "TESTING_CI"
       threads: 4
+      client_session_keep_alive: False
+    test:
+
+      type: "snowflake"
+
+      account: "infinitelambda.eu-west-1"
+
+      private_key_passphrase: "{{ env_var('dvd_test_passphrase')}}"
+
+      private_key_path: /home/runner/work/re_data_sample/re_data_sample/rsa_key_david_sf.p8
+
+      user: "DAVIDSANCHEZ" 
+
+      role: "ROLE_DVD_TEST" 
+
+      database: "{{ env_var('pr_ci_db')}} "
+
+      warehouse: "WAREHOUSE_DVD_TEST" 
+
+      schema: "TESTING_CI"
+
+      threads: 4
+
       client_session_keep_alive: False

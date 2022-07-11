@@ -47,6 +47,9 @@ jobs:
         run: |
           pwd
           cd weather
+          export pr_ci_db=$(echo "PR_")$(echo $GITHUB_REF_NAME | grep -Ei '[0-9]/merge' | grep -oEi '[0-9]')
+
+
           dbt debug --target test
       - name: install aws
         run: "sudo apt-get install -yqq awscli"

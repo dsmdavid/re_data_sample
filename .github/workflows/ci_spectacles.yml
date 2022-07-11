@@ -43,6 +43,8 @@ jobs:
           chmod 400 ./rsa_key_david_sf.p8
       - name: install requirements
         run: "pip install -r requirements.txt"
+      - name: dbt debug
+        run:  "dbt debug"
       - name: install aws
         run: "sudo apt-get install -yqq awscli"
       - name: say hello

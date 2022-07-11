@@ -44,7 +44,10 @@ jobs:
       - name: install requirements
         run: "pip install -r requirements.txt"
       - name: dbt debug
-        run:  "dbt debug"
+        run: |
+          pwd
+          cd weather
+          dbt debug
       - name: install aws
         run: "sudo apt-get install -yqq awscli"
       - name: say hello

@@ -94,6 +94,7 @@ jobs:
           python-version: "3.9"
       - name: sanity-check
         run: |
+          pip install requests
           pwd
           env
           python ./spectacles/spectacles.py

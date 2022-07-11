@@ -21,3 +21,4 @@ select
 from forecast
 group by country, DATE_VALID_STD
    
+-- mod

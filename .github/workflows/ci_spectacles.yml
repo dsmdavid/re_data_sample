@@ -43,4 +43,16 @@ jobs:
         run: |
           echo hello
           echo here
-      
+      - name: install deps & download previos target
+        run: |
+          cd weather
+          dbt deps
+          mkdir target
+          mkdir target/previous_run
+          aws s3 cp s3://dvd-il-bucket/manifest.json ./target/previous_run/manifest.json 
+
+      - name: clone database
+        run: dbt run-operation clone_database --target test
+      - name: run slim-ci
+        run: dbt run --exclude package:re_data package:dbt_artifacts  --defer --state ./target/previous_run/ --select state:modified+ --target test
+

@@ -55,7 +55,7 @@ jobs:
           export pr_ci_db=$(echo "PR_")$(echo $GITHUB_REF_NAME | grep -Ei '[0-9]/merge' | grep -oEi '[0-9]')
 
 
-          dbt debug --target test
+          dbt debug --target clone
       - name: install aws
         run: "sudo apt-get install -yqq awscli"
       - name: say hello
@@ -72,7 +72,7 @@ jobs:
           mkdir target/previous_run
           echo "download previous manifest"
           aws s3 cp s3://dvd-il-bucket/manifest.json ./target/previous_run/manifest.json 
-          dbt run-operation clone_database --target test
+          dbt run-operation clone_database --target clone
           dbt run --exclude package:re_data package:dbt_artifacts  --defer --state ./target/previous_run/ --select state:modified+ --target test
 
   run_spectacles:

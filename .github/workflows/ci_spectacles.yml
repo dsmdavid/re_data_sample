@@ -95,4 +95,5 @@ jobs:
       - name: sanity-check
         run: |
           pwd
+          env
           python ./spectacles/spectacles.py

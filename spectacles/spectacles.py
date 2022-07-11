@@ -19,7 +19,7 @@ if not api_key:
         api_key = f.read()
 
 if not api_key:
-    raise Exception("No API key found for spectacles, aborting").
+    raise Exception("No API key found for spectacles, aborting")
 headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
 # Define the schema of the dbt staging data
 dvd_spectacles_db = os.getenv('pr_ci_db')

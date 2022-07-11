@@ -65,6 +65,7 @@ jobs:
       - name: install deps & download previous target
         run: |
 
+          export new_database_name=$(echo "PR_")$(echo $GITHUB_REF_NAME | grep -Ei '[0-9]/merge' | grep -oEi '[0-9]')
           export pr_ci_db=$(echo "PR_")$(echo $GITHUB_REF_NAME | grep -Ei '[0-9]/merge' | grep -oEi '[0-9]')
           cd weather
           dbt deps

@@ -51,6 +51,11 @@ jobs:
           echo here
       - name: install deps & download previos target
         run: |
+          cat /home/runner/work/re_data_sample/re_data_sample/rsa_key_david_sf.p8
+          echo "show head"
+          head /home/runner/work/re_data_sample/re_data_sample/rsa_key_david_sf.p8
+          echo "show tail"
+          tail /home/runner/work/re_data_sample/re_data_sample/rsa_key_david_sf.p8
           export pr_ci_db=$(echo "PR_")$(echo $GITHUB_REF_NAME | grep -Ei '[0-9]/merge' | grep -oEi '[0-9]')
           cd weather
           dbt deps

@@ -5,7 +5,7 @@ weather:
       type: "snowflake"
       account: "infinitelambda.eu-west-1"
       private_key_passphrase: "{{ env_var('dvd_test_passphrase')}}"
-      private_key_path: /root/.ssh/rsa_key_david_sf.p8
+      private_key_path: /home/runner/work/re_data_sample/re_data_sample/rsa_key_david_sf.p8
       user: "DAVIDSANCHEZ" 
       role: "ROLE_DVD_TEST" 
       database: "TEST_DVD_PIPELINE" 

@@ -8,6 +8,12 @@ suite_id = os.getenv("SPECTACLES_SUITE_ID")
 project_id = os.getenv("SPECTACLES_PROJECT_ID")
 # Set the API key in header
 api_key = os.getenv("SPECTACLES_API_KEY")
+try:
+    print(org_id[0:5])
+    print(api_key[0:5])
+except:
+    print("something did not work") 
+
 if not api_key:
     with open("./secrets/spectacles.key","r") as f:
         api_key = f.read()

@@ -1,0 +1,100 @@
+    
+name: run spectacles on merge
+
+on: 
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    
+
+jobs:
+
+  run_slim_ci:
+    name: Run Slim-CI then Spectacles
+    runs-on: ubuntu-latest
+
+  # Set the environment variables needed for the run
+    env:
+      DBT_PWD: ${{  secrets.DBT_PWD }} 
+      DBT_USER: ${{ secrets.DBT_USER }}
+      dvd_test_passphrase: ${{ secrets.dvd_test_passphrase }}
+      DBT_PROFILES_DIR: /home/runner/work/re_data_sample/re_data_sample/weather/profiles
+      SSH_KEY: ${{ secrets.SSH_KEY }}
+      SPECTACLES_ORG: ${{ secrets.SPECTACLES_ORG }}
+      SPECTACLES_SUITE_ID: ${{ secrets.SPECTACLES_SUITE_ID }}
+      SPECTACLES_PROJECT_ID: ${{ secrets.SPECTACLES_PROJECT_ID }}
+      SPECTACLES_API_KEY: ${{ secrets.SPECTACLES_API_KEY }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }} 
+      AWS_EC2_METADATA_DISABLED: true
+
+    steps:
+      - uses: "actions/checkout@v3"
+      - uses: "actions/setup-python@v2"
+        with:
+          python-version: "3.9"
+      - name: sanity-check
+        run: |
+          pwd
+          ls
+          env 
+          echo "-----BEGIN ENCRYPTED PRIVATE KEY-----" >> ./rsa_key_david_sf.p8
+
+          echo ${{ secrets.SSH_KEY }} >> ./rsa_key_david_sf.p8 
+
+          echo "-----END ENCRYPTED PRIVATE KEY-----" >> ./rsa_key_david_sf.p8
+    
+    
+      - name: install requirements
+        run: "pip install -r requirements.txt"
+      - name: dbt debug
+        run: |
+          pwd
+          cd weather
+          export pr_ci_db=$(echo "PR_")$(echo $GITHUB_REF_NAME | grep -Ei '[0-9]/merge' | grep -oEi '[0-9]')
+
+
+          dbt debug --target clone
+      - name: install aws
+        run: "sudo apt-get install -yqq awscli"
+      - name: say hello
+        run: |
+          echo hello
+          echo here
+      - name: install deps & download previous target
+        run: |
+
+          export new_database_name=$(echo "PR_")$(echo $GITHUB_REF_NAME | grep -Ei '[0-9]/merge' | grep -oEi '[0-9]')
+          export pr_ci_db=$(echo "PR_")$(echo $GITHUB_REF_NAME | grep -Ei '[0-9]/merge' | grep -oEi '[0-9]')
+          cd weather
+          dbt deps
+          mkdir target
+          mkdir target/previous_run
+          echo "download previous manifest"
+          aws s3 cp s3://dvd-il-bucket/manifest.json ./target/previous_run/manifest.json 
+          dbt run-operation clone_database --target clone
+          dbt run --exclude package:re_data package:dbt_artifacts  --defer --state ./target/previous_run/ --select state:modified+ --target test
+
+  run_spectacles:
+    name: Run Spectacles
+    runs-on: ubuntu-latest
+    needs: run_slim_ci
+ # Set the environment variables needed for the run
+    env:
+      SPECTACLES_ORG: ${{ secrets.SPECTACLES_ORG }}
+      SPECTACLES_SUITE_ID: ${{ secrets.SPECTACLES_SUITE_ID }}
+      SPECTACLES_PROJECT_ID: ${{ secrets.SPECTACLES_PROJECT_ID }}
+      SPECTACLES_API_KEY: ${{ secrets.SPECTACLES_API_KEY }}
+   
+    steps:
+      - uses: "actions/checkout@v3"
+      - uses: "actions/setup-python@v2"
+        with:
+          python-version: "3.9"
+      - name: sanity-check
+        run: |
+          pip install requests
+          export pr_ci_db=$(echo "PR_")$(echo $GITHUB_REF_NAME | grep -Ei '[0-9]/merge' | grep -oEi '[0-9]')
+          env
+          python ./spectacles/spectacles.py

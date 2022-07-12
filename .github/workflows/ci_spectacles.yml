@@ -95,6 +95,6 @@ jobs:
       - name: sanity-check
         run: |
           pip install requests
-          pwd
+          export pr_ci_db=$(echo "PR_")$(echo $GITHUB_REF_NAME | grep -Ei '[0-9]/merge' | grep -oEi '[0-9]')
           env
           python ./spectacles/spectacles.py

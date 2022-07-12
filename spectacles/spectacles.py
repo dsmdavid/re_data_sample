@@ -8,6 +8,9 @@ suite_id = os.getenv("SPECTACLES_SUITE_ID")
 project_id = os.getenv("SPECTACLES_PROJECT_ID")
 # Set the API key in header
 api_key = os.getenv("SPECTACLES_API_KEY")
+dvd_spectacles_db = os.getenv('pr_ci_db')
+
+
 try:
     print(org_id[0:5])
     print(api_key[0:5])
